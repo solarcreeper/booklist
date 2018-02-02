@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">BookList</string>
 
-    <string name="booklist_internet_books">网络书单</string>
+    <string name="booklist_recommend_books">推荐书单</string>
     <string name="booklist_my_books">我的书单</string>
     <string name="booklist_my_error">Error</string>
 </resources>

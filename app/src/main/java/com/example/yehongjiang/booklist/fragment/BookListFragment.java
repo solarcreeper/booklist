@@ -58,7 +58,6 @@ public class BookListFragment extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-//                return TestFragment.newInstance(position);
             return BookGridFragment.newInstance(position);
         }
 
@@ -71,7 +70,7 @@ public class BookListFragment extends Fragment {
         public CharSequence getPageTitle(int position){
             switch (position){
                 case BOOKLIST_SECTION_CATEGORY_INTERNET:
-                    return mContext.getString(R.string.booklist_internet_books);
+                    return mContext.getString(R.string.booklist_recommend_books);
                 case BOOKLIST_SECTION_CATEGORY_MINE:
                     return mContext.getString(R.string.booklist_my_books);
                 default:

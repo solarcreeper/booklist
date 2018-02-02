@@ -30,46 +30,19 @@ import java.util.ArrayList;
  * <date>2018/1/23</date>
  * <summary>booklist</summary>
  */
-public class BookGridRecycleViewAdapter extends RecyclerView.Adapter<BookGridRecycleViewAdapter.BookGridViewHolder> {
+public class BookGridRecyclerViewAdapter extends RecyclerView.Adapter<BookGridRecyclerViewAdapter.BookGridViewHolder> {
     private final LayoutInflater mLayoutInflater;
     private final Context mContext;
     private ArrayList<Book> mBooks;
 
-    class BookGridViewHolder extends RecyclerView.ViewHolder {
-        private final double CARD_HEIGHT_SCALE_RATIO = 0.5;
-        private CardView cardView;
-        private TextView mTextView;
-        private ImageView mImageView;
-
-        BookGridViewHolder(final View itemView) {
-            super(itemView);
-            DisplayMetrics dm = itemView.getResources().getDisplayMetrics();
-            ViewGroup.LayoutParams lp = itemView.getLayoutParams();
-            lp.height = (int) (CARD_HEIGHT_SCALE_RATIO * dm.widthPixels);
-            itemView.setLayoutParams(lp);
-
-            cardView = itemView.findViewById(R.id.card_in_grid);
-            mTextView = itemView.findViewById(R.id.title_in_grid);
-            mImageView = itemView.findViewById(R.id.card_book_image_in_grid);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("GridViewHolder", "onClick --> position = " + getAdapterPosition());
-                    Intent intent = new Intent(itemView.getContext(), BookDetailActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("content", mBooks.get(getAdapterPosition()));
-                    intent.putExtras(bundle);
-                    itemView.getContext().startActivity(intent);
-                }
-            });
-
-        }
-    }
-
-    public BookGridRecycleViewAdapter(Context mContext, ArrayList<Book> mBooks) {
+    public BookGridRecyclerViewAdapter(Context mContext, ArrayList<Book> mBooks) {
         this.mContext = mContext;
         this.mBooks = mBooks;
         this.mLayoutInflater = LayoutInflater.from(mContext);
+    }
+
+    public void setmBooks(ArrayList<Book> books){
+        this.mBooks = books;
     }
 
     @Override
@@ -81,8 +54,12 @@ public class BookGridRecycleViewAdapter extends RecyclerView.Adapter<BookGridRec
     public void onBindViewHolder(final BookGridViewHolder holder, int position) {
         Log.d("bindViewHolder", "start");
         holder.mTextView.setText(mBooks.get(position).getTitle());
+        String url = mBooks.get(position).getImages().get(2);
+//        url = "https://img3.doubanio.com/lpic/s24412503.jpg";
+        Log.d("Image Url", url);
+//        Glide.with(mContext).load(url).into(holder.mImageView);
         Picasso.with(mContext)
-                .load(mBooks.get(position).getImages().get(2))
+                .load(url)
                 .into(holder.mImageView, new Callback.EmptyCallback(){
                     @Override
                     public void onSuccess(){
@@ -106,5 +83,37 @@ public class BookGridRecycleViewAdapter extends RecyclerView.Adapter<BookGridRec
     public int getItemCount() {
         Log.d("item count", String.valueOf(mBooks.size()));
         return mBooks.size();
+    }
+
+    class BookGridViewHolder extends RecyclerView.ViewHolder {
+        private final double CARD_HEIGHT_SCALE_RATIO = 0.5;
+        private CardView cardView;
+        private TextView mTextView;
+        private ImageView mImageView;
+
+        BookGridViewHolder(final View itemView) {
+            super(itemView);
+            DisplayMetrics dm = itemView.getResources().getDisplayMetrics();
+            ViewGroup.LayoutParams lp = itemView.getLayoutParams();
+            lp.height = (int) (CARD_HEIGHT_SCALE_RATIO * dm.widthPixels);
+            itemView.setLayoutParams(lp);
+
+            cardView = itemView.findViewById(R.id.card_in_grid);
+            mTextView = itemView.findViewById(R.id.title_in_grid);
+            mImageView = itemView.findViewById(R.id.card_book_image_in_grid);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                    Log.d("GridViewHolder", "onClick --> position = " + getLayoutPosition());
+                    Intent intent = new Intent(itemView.getContext(), BookDetailActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("content", mBooks.get(getLayoutPosition()));
+                    mBooks.get(getLayoutPosition()).printBookInfo();
+                    intent.putExtras(bundle);
+                    itemView.getContext().startActivity(intent);
+                }
+            });
+
+        }
     }
 }

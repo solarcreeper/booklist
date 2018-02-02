@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -137,6 +139,7 @@ public class ConnectBase {
             Log.d(TAG, "function:searchNet error:json parse error");
             e.printStackTrace();
         }
+        Log.d(TAG, result);
         return bookArrayList;
     }
 
@@ -181,39 +184,39 @@ public class ConnectBase {
 
     public static String httpConnectionGet(String urlAddress, ArrayList<String> keys, ArrayList<String> values) {
         String result = "";
-//        String content = ConnectBase.encodeParams(keys, values);
-//        URL url;
-//        try {
-//            url = new URL(urlAddress + "?" + content);
-//            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//            connection.setRequestMethod("GET");
-//            connection.setConnectTimeout(GlobalSetting.TIMEOUT);
-//            connection.setDoInput(true);
-//            connection.setDoOutput(true);
-//            connection.setUseCaches(false);
-//            connection.connect();
-//            DataOutputStream out = new DataOutputStream(connection.getOutputStream());
-//            out.writeBytes(content);
-//            out.flush();
-//            out.close();
-//            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-//                InputStreamReader in = new InputStreamReader(connection.getInputStream());
-//                BufferedReader reader = new BufferedReader(in);
-//                String inputLine = null;
-//                while ((inputLine = reader.readLine()) != null) {
-//                    result = result + inputLine + "\n";
-//                }
-//                in.close();
-//            } else {
-//                result = "{\"error_code\":\"" + String.valueOf(GlobalSetting.NETWORK_ERROR) + "\"}";
-//            }
-//            connection.disconnect();
-//        } catch (IOException e) {
-//            result = "{\"error_code\":\"" + String.valueOf(GlobalSetting.NETWORK_ERROR) + "\"}";
-//            e.printStackTrace();
-//        }
-//        Log.d(TAG, "function:httpConnectionGet error:" + result);
-        result = GlobalSetting.FADE_JSON;
+        String content = ConnectBase.encodeParams(keys, values);
+        URL url;
+        try {
+            url = new URL(urlAddress + "?" + content);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.setConnectTimeout(GlobalSetting.TIMEOUT);
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+            connection.setUseCaches(false);
+            connection.connect();
+            DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+            out.writeBytes(content);
+            out.flush();
+            out.close();
+            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                InputStreamReader in = new InputStreamReader(connection.getInputStream());
+                BufferedReader reader = new BufferedReader(in);
+                String inputLine = null;
+                while ((inputLine = reader.readLine()) != null) {
+                    result = result + inputLine + "\n";
+                }
+                in.close();
+            } else {
+                result = "{\"error_code\":\"" + String.valueOf(GlobalSetting.NETWORK_ERROR) + "\"}";
+            }
+            connection.disconnect();
+        } catch (IOException e) {
+            result = "{\"error_code\":\"" + String.valueOf(GlobalSetting.NETWORK_ERROR) + "\"}";
+            e.printStackTrace();
+        }
+        Log.d(TAG, "function:httpConnectionGet error:" + result);
+//        result = GlobalSetting.FADE_JSON;
         return result;
     }
 

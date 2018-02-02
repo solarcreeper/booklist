@@ -1,5 +1,7 @@
 package com.example.yehongjiang.booklist.model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.io.Serializable;
 
@@ -44,7 +46,7 @@ public class Book implements Serializable {
                 String subTitle, String url, String alt, String image, ArrayList<String> images,
                 ArrayList<String> author, ArrayList<String> translator, String publisher,
                 String pubdate, ArrayList<String> rating, ArrayList<String> tags,
-                String binding, String price, String pages,String authorIntro,
+                String binding, String price, String pages, String authorIntro,
                 String summary, String catalog, boolean isWanted) {
         this.isbn10 = isbn10;
         this.isbn13 = isbn13;
@@ -254,4 +256,30 @@ public class Book implements Serializable {
     public void setWanted(boolean wanted) {
         isWanted = wanted;
     }
+
+    public void printBookInfo() {
+        Log.d("BookInfo_isbn10", this.isbn10);
+        Log.d("BookInfo_isbn13", this.isbn13);
+        Log.d("BookInfo_title ", this.title);
+        Log.d("BookInfo_originTitle", this.originTitle);
+        Log.d("BookInfo_altTitle", this.altTitle);
+        Log.d("BookInfo_subTitle", this.subTitle);
+        Log.d("BookInfo_url", this.url);
+        Log.d("BookInfo_alt", this.alt);
+        Log.d("BookInfo_image", this.image);
+        Log.d("BookInfo_images", this.images.toString());
+        Log.d("BookInfo_author", this.author.toString());
+        Log.d("BookInfo_translator ", this.translator.toString());
+        Log.d("BookInfo_publisher", this.publisher);
+        Log.d("BookInfo_pubdate", this.pubdate);
+        Log.d("BookInfo_rating ", this.rating.toString());
+        Log.d("BookInfo_tags", this.tags.toString());
+        Log.d("BookInfo_binding", this.binding);
+        Log.d("BookInfo_price", this.price);
+        Log.d("BookInfo_pages", this.pages);
+        Log.d("BookInfo_authorInt", this.authorIntro);
+        Log.d("BookInfo_summary", this.summary);
+        Log.d("BookInfo_catalog", this.catalog);
+    }
+
 }

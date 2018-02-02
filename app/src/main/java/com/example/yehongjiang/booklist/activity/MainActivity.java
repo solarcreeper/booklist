@@ -1,8 +1,11 @@
 package com.example.yehongjiang.booklist.activity;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.speech.RecognizerIntent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.yehongjiang.booklist.R;
 import com.example.yehongjiang.booklist.fragment.BookListFragment;
+import com.example.yehongjiang.booklist.fragment.SearchResultListFragment;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -24,16 +28,15 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.quinny898.library.persistentsearch.SearchBox;
 import com.quinny898.library.persistentsearch.SearchResult;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
     private Fragment content;
+    private Fragment searchResultList;
     private Fragment booklist;
 
-    private AccountHeader accountHeader;
     private Drawer naviDrawer;
     private SearchBox searchBox;
-
-    private ViewPager viewPager;
-    private FragmentPagerAdapter pagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         booklist = BookListFragment.newInstance();
 
-        accountHeader = new AccountHeaderBuilder()
+        AccountHeader accountHeader = new AccountHeaderBuilder()
                 .withActivity(this)
                 .withSelectionListEnabled(false)
                 .withProfileImagesClickable(false)
@@ -119,7 +122,55 @@ public class MainActivity extends AppCompatActivity {
                 naviDrawer.openDrawer();
             }
         });
+        searchBox.setSearchListener(new SearchBox.SearchListener() {
+            @Override
+            public void onSearchOpened() {
 
-        getSupportFragmentManager().beginTransaction().add(R.id.content, booklist).commit();
+            }
+
+            @Override
+            public void onSearchCleared() {
+
+            }
+
+            @Override
+            public void onSearchClosed() {
+                searchBox.clearResults();
+            }
+
+            @Override
+            public void onSearchTermChanged(String s) {
+
+            }
+
+            @Override
+            public void onSearch(String s) {
+                searchResultList = SearchResultListFragment.newInstance(s);
+                switchFragment(searchResultList);
+            }
+
+            @Override
+            public void onResultClick(SearchResult searchResult) {
+
+            }
+        });
+        switchFragment(booklist);
+    }
+
+    private void switchFragment(Fragment fragment) {
+        if (content == null) {
+            getSupportFragmentManager().beginTransaction().add(R.id.content, fragment).commit();
+            content = fragment;
+        } else {
+            if (content != fragment) {
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                if (!fragment.isAdded()) {
+                    transaction.hide(content).add(R.id.content, fragment).commit();
+                } else {
+                    transaction.hide(content).show(fragment).commit();
+                }
+                content = fragment;
+            }
+        }
     }
 }

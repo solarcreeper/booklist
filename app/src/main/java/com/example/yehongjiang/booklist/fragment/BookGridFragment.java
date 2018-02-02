@@ -1,8 +1,5 @@
 package com.example.yehongjiang.booklist.fragment;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.yehongjiang.booklist.R;
-import com.example.yehongjiang.booklist.adapter.BookGridRecycleViewAdapter;
+import com.example.yehongjiang.booklist.adapter.BookGridRecyclerViewAdapter;
 import com.example.yehongjiang.booklist.model.Book;
 import com.example.yehongjiang.booklist.model.BookList;
 import com.example.yehongjiang.booklist.model.DataManage;
@@ -31,6 +28,7 @@ import java.util.ArrayList;
 
 public class BookGridFragment extends BookListFragment {
     private RecyclerView mRecyclerView;
+    private BookGridRecyclerViewAdapter adapter;
     private int mSectiontCategory;
 
     public BookGridFragment() {
@@ -51,25 +49,22 @@ public class BookGridFragment extends BookListFragment {
         View rootView = inflater.inflate(R.layout.fragment_book_grid, container, false);
         mRecyclerView = rootView.findViewById(R.id.recycleview_book_grid);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        adapter = new BookGridRecyclerViewAdapter(getActivity(), new ArrayList<Book>());
+        mRecyclerView.setAdapter(adapter);
         return rootView;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        new BooksGenerateTask(getActivity(), mRecyclerView, mSectiontCategory).execute();
-
+        new BooksGenerateTask(mSectiontCategory).execute();
     }
 
     public class BooksGenerateTask extends AsyncTask<String, Integer, BookList> {
-        private final int mSectionCategory;
-        private final Activity mContext;
-        private final RecyclerView mRecyclerView;
+        int mCategory;
 
-        public BooksGenerateTask(Activity context, RecyclerView recyclerView, int sectionCategory) {
-            mSectionCategory = sectionCategory;
-            mContext = context;
-            mRecyclerView = recyclerView;
+        BooksGenerateTask(int category) {
+            mCategory = category;
         }
 
         @Override
@@ -84,12 +79,12 @@ public class BookGridFragment extends BookListFragment {
             BookList bookList = new BookList();
 //            SharedPreferences preferences = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
 //            String uid = preferences.getString("userId", "-1");
-            switch (mSectionCategory){
+            switch (mCategory){
                 case BOOKLIST_SECTION_CATEGORY_INTERNET:
-                    bookList = DataManage.getRequiredBooks(20, 0);
+                    bookList = DataManage.getRequiredBooks(2, 0);
                     break;
                 case BOOKLIST_SECTION_CATEGORY_MINE:
-                    bookList = DataManage.getRequiredBooks(20, 0);
+                    bookList = DataManage.getRequiredBooks(2, 0);
                     break;
                 default:
                     break;
@@ -102,10 +97,8 @@ public class BookGridFragment extends BookListFragment {
         protected void onPostExecute(BookList result) {
             super.onPostExecute(result);
             ArrayList<Book> mBooks = result.getBooks();
-            BookGridRecycleViewAdapter adapter = new BookGridRecycleViewAdapter(getActivity(), mBooks);
-            mRecyclerView.setAdapter(adapter);
+            adapter.setmBooks(mBooks);
             adapter.notifyDataSetChanged();
-
             FloatingActionButton fab = getActivity().findViewById(R.id.fab);
             fab.show();
             fab.attachToRecyclerView(mRecyclerView);
