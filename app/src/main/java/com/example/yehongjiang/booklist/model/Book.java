@@ -2,6 +2,10 @@ package com.example.yehongjiang.booklist.model;
 
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.io.Serializable;
 
@@ -29,7 +33,6 @@ public class Book implements Serializable {
     private String publisher;
     private String pubdate;
     private ArrayList<String> rating = new ArrayList<>();
-    private ArrayList<String> tags = new ArrayList<>();
     private String binding;
     private String price;
     private String pages;
@@ -45,15 +48,15 @@ public class Book implements Serializable {
     public Book(String isbn10, String isbn13, String title, String originTitle, String altTitle,
                 String subTitle, String url, String alt, String image, ArrayList<String> images,
                 ArrayList<String> author, ArrayList<String> translator, String publisher,
-                String pubdate, ArrayList<String> rating, ArrayList<String> tags,
+                String pubdate, ArrayList<String> rating,
                 String binding, String price, String pages, String authorIntro,
                 String summary, String catalog, boolean isWanted) {
         this.isbn10 = isbn10;
         this.isbn13 = isbn13;
-        this.title = title;
-        this.originTitle = originTitle;
-        this.altTitle = altTitle;
-        this.subTitle = subTitle;
+        this.title = title.replace("'", "\'");
+        this.originTitle = originTitle.replace("'", "\'");
+        this.altTitle = altTitle.replace("'", "\'");
+        this.subTitle = subTitle.replace("'", "\'");
         this.url = url;
         this.alt = alt;
         this.image = image;
@@ -62,14 +65,18 @@ public class Book implements Serializable {
         this.translator = translator;
         this.publisher = publisher;
         this.pubdate = pubdate;
+        for (int i = 0; i < rating.size(); i++){
+            if (rating.get(i).equals("")){
+                rating.set(i, "0");
+            }
+        }
         this.rating = rating;
-        this.tags = tags;
         this.binding = binding;
         this.price = price;
         this.pages = pages;
         this.authorIntro = authorIntro;
-        this.summary = summary;
-        this.catalog = catalog;
+        this.summary = summary.replace("'", "\'");
+        this.catalog = catalog.replace("'", "\'");
         this.isWanted = isWanted;
     }
 
@@ -193,14 +200,6 @@ public class Book implements Serializable {
         this.rating = rating;
     }
 
-    public ArrayList<String> getTags() {
-        return tags;
-    }
-
-    public void setTags(ArrayList<String> tags) {
-        this.tags = tags;
-    }
-
     public String getBinding() {
         return binding;
     }
@@ -273,7 +272,6 @@ public class Book implements Serializable {
         Log.d("BookInfo_publisher", this.publisher);
         Log.d("BookInfo_pubdate", this.pubdate);
         Log.d("BookInfo_rating ", this.rating.toString());
-        Log.d("BookInfo_tags", this.tags.toString());
         Log.d("BookInfo_binding", this.binding);
         Log.d("BookInfo_price", this.price);
         Log.d("BookInfo_pages", this.pages);
@@ -282,4 +280,43 @@ public class Book implements Serializable {
         Log.d("BookInfo_catalog", this.catalog);
     }
 
+    public JSONObject encodeJson() {
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("isbn10", this.isbn10);
+            obj.put("isbn13", this.isbn13);
+            obj.put("title ", this.title);
+            obj.put("originTitle", this.originTitle);
+            obj.put("altTitle", this.altTitle);
+            obj.put("subTitle", this.subTitle);
+            obj.put("url", this.url);
+            obj.put("alt", this.alt);
+            obj.put("image", this.image);
+            JSONObject images = new JSONObject();
+            images.put("small", this.images.get(0));
+            images.put("large", this.images.get(1));
+            images.put("medium", this.images.get(2));
+            obj.put("images", images);
+            obj.put("author", new JSONArray(this.author));
+            obj.put("translator", new JSONArray(this.translator));
+            obj.put("publisher", this.publisher);
+            obj.put("pubdate", this.pubdate);
+            JSONObject rating = new JSONObject();
+            rating.put("max", this.rating.get(0));
+            rating.put("numRaters", this.rating.get(1));
+            rating.put("average", this.rating.get(2));
+            rating.put("min", this.rating.get(3));
+            obj.put("rating", rating);
+            obj.put("binding", this.binding);
+            obj.put("price", this.price);
+            obj.put("pages", this.pages);
+            obj.put("authorIntro", this.authorIntro);
+            obj.put("summary", this.summary);
+            obj.put("catalog", this.catalog);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.d("book json", obj.toString());
+        return obj;
+    }
 }

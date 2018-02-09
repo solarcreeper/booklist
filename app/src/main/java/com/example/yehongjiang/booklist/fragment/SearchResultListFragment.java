@@ -18,7 +18,6 @@ import com.example.yehongjiang.booklist.model.DataManage;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * <copyright>Copyright (c) 2018 All Right Reserved</copyright>

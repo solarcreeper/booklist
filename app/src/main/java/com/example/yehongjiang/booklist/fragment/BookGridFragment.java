@@ -81,10 +81,10 @@ public class BookGridFragment extends BookListFragment {
 //            String uid = preferences.getString("userId", "-1");
             switch (mCategory){
                 case BOOKLIST_SECTION_CATEGORY_INTERNET:
-                    bookList = DataManage.getRequiredBooks(2, 0);
+                    bookList = DataManage.getRequiredBooks(5, 0);
                     break;
                 case BOOKLIST_SECTION_CATEGORY_MINE:
-                    bookList = DataManage.getRequiredBooks(2, 0);
+//                    bookList = DataManage.getBookList("1",2, 0);
                     break;
                 default:
                     break;

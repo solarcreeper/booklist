@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.yehongjiang.booklist.R;
 import com.example.yehongjiang.booklist.fragment.BookListFragment;
 import com.example.yehongjiang.booklist.fragment.SearchResultListFragment;
+import com.melnykov.fab.FloatingActionButton;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Drawer naviDrawer;
     private SearchBox searchBox;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         booklist = BookListFragment.newInstance();
+
+        fab = findViewById(R.id.fab);
 
         AccountHeader accountHeader = new AccountHeaderBuilder()
                 .withActivity(this)
@@ -172,5 +176,10 @@ public class MainActivity extends AppCompatActivity {
                 content = fragment;
             }
         }
+    }
+
+    public void startScanActivity(View view){
+        Intent intent = new Intent(this, ScanActivity.class);
+        startActivity(intent);
     }
 }

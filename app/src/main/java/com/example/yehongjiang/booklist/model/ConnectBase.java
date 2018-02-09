@@ -21,6 +21,7 @@ import java.net.Proxy;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.microedition.khronos.opengles.GL;
 
@@ -114,13 +115,6 @@ public class ConnectBase {
                 rating.add(ratingObj.getString("average"));
                 rating.add(ratingObj.getString("min"));
 
-                ArrayList<String> tags = new ArrayList<>();
-                JSONArray tagsList = book.getJSONArray("tags");
-                for (int index = 0; index < tagsList.length(); index++) {
-                    JSONObject object = (JSONObject) tagsList.get(index);
-                    tags.add(object.getString("name"));
-                }
-
                 String binding = book.getString("binding");
                 String price = book.getString("price");
 
@@ -132,7 +126,7 @@ public class ConnectBase {
 
                 Book newBook = new Book(isbn10, isbn13, title, originTitle, altTitle, subTitle,
                         url, alt, image, images, author, translator, publisher, pubdate, rating,
-                        tags, binding, price, pages, authorIntro, summary, catalog, isWanted);
+                        binding, price, pages, authorIntro, summary, catalog, isWanted);
                 bookArrayList.add(newBook);
             }
         } catch (JSONException e) {
@@ -232,5 +226,22 @@ public class ConnectBase {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public static ArrayList<Data> decodeResult(String result){
+        ArrayList<Data> data = new ArrayList<>();
+        try {
+            JSONTokener jsonTokener = new JSONTokener(result);
+            JSONObject object = (JSONObject) jsonTokener.nextValue();
+            Iterator<?> keys = object.keys();
+            while(keys.hasNext()){
+                String key = (String)keys.next();
+                String value = object.getString(key);
+                data.add(new Data(key, value));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return data;
     }
 }
