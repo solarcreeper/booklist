@@ -4,4 +4,10 @@
     <string name="booklist_recommend_books">推荐书单</string>
     <string name="booklist_my_books">我的书单</string>
     <string name="booklist_my_error">Error</string>
+    <string name="introduction">简介</string>
+    <string name="add_want_list">增加到心愿单</string>
+    <string name="welcome">Welcome</string>
+    <string name="sign_in">Sign_In</string>
+
+
 </resources>

@@ -53,10 +53,10 @@ public class Book implements Serializable {
                 String summary, String catalog, boolean isWanted) {
         this.isbn10 = isbn10;
         this.isbn13 = isbn13;
-        this.title = title.replace("'", "\'");
-        this.originTitle = originTitle.replace("'", "\'");
-        this.altTitle = altTitle.replace("'", "\'");
-        this.subTitle = subTitle.replace("'", "\'");
+        this.title = title.replace("'", "\\\'");
+        this.originTitle = originTitle.replace("'", "\\\'");
+        this.altTitle = altTitle.replace("'", "\\\'");
+        this.subTitle = subTitle.replace("'", "\\\'");
         this.url = url;
         this.alt = alt;
         this.image = image;
@@ -74,9 +74,9 @@ public class Book implements Serializable {
         this.binding = binding;
         this.price = price;
         this.pages = pages;
-        this.authorIntro = authorIntro;
-        this.summary = summary.replace("'", "\'");
-        this.catalog = catalog.replace("'", "\'");
+        this.authorIntro = authorIntro.replace("'", "\\\'");
+        this.summary = summary.replace("'", "\\\'");
+        this.catalog = catalog.replace("'", "\\\'");
         this.isWanted = isWanted;
     }
 

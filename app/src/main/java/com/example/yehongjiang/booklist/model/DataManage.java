@@ -69,7 +69,7 @@ public class DataManage {
         return ConnectBase.httpConnectionPost(names, values);
     }
 
-    public static ArrayList<Book> getBookList(String userId, int start, int count) {
+    public static BookList getBookList(String userId, int start, int count) {
         ArrayList<Book> bookList = new ArrayList<>();
         ArrayList<String> names = new ArrayList<>();
         ArrayList<String> values = new ArrayList<>();
@@ -143,7 +143,9 @@ public class DataManage {
             Log.d(TAG, "function:searchNet error:json parse error");
             e.printStackTrace();
         }
-        return bookList;
+        BookList bookResult = new BookList(bookList, start, bookList.size());
+
+        return bookResult;
     }
 
 

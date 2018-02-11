@@ -64,7 +64,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/publish_info"
-                    android:text="Button" />
+                    android:text="@string/add_want_list" />
 
                 <TextView
                     android:id="@+id/introduction"
@@ -72,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/want"
                     android:layout_marginTop="8dp"
-                    android:text="TextView" />
+                    android:text="@string/introduction" />
 
                 <com.ms.square.android.expandabletextview.ExpandableTextView
                     xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"

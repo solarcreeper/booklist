@@ -25,18 +25,18 @@ public class testModel {
             BookList bookList = DataManage.getRequiredBooks(1, 0);
             if (bookList.getBooks().size() > 0){
                 ArrayList<Book> books = bookList.getBooks();
-                String register_result = DataManage.register("yehongjiang" + String.valueOf(i), "yehongjiang");
+                String register_result = DataManage.register("yehongjiang", "yehongjiang");
                 Log.d("test", register_result);
-                String user_id = ConnectBase.decodeResult(DataManage.login("yehongjiang" + String.valueOf(i), "yehongjiang")).get(1).value;
+                String user_id = ConnectBase.decodeResult(DataManage.login("yehongjiang", "yehongjiang")).get(1).value;
                 Log.d("test", user_id);
 
                 String add_result = DataManage.addWantedBook(books.get(0), user_id);
                 Log.d("test", add_result);
 
-                ArrayList<Book> booklist = DataManage.getBookList(user_id, 0, 6);
-
-                String remove1 = DataManage.removeWantedBook(booklist.get(0), user_id);
-                Log.d("test", remove1);
+//                BookList booklist = DataManage.getBookList(user_id, 0, 6);
+//
+//                String remove1 = DataManage.removeWantedBook(booklist.getBooks().get(0), user_id);
+//                Log.d("test", remove1);
             }
         }
     }

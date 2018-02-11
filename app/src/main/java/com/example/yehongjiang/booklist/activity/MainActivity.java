@@ -87,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.makeText(MainActivity.this, "press 0", Toast.LENGTH_SHORT).show();
                                 break;
                             case 1:
+                                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                                startActivity(intent);
                                 Toast.makeText(MainActivity.this, "press 1", Toast.LENGTH_SHORT).show();
                                 break;
                             case 2:

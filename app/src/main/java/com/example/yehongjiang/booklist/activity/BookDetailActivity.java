@@ -3,11 +3,13 @@ package com.example.yehongjiang.booklist.activity;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,13 +18,21 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.commit451.nativestackblur.NativeStackBlur;
 import com.example.yehongjiang.booklist.R;
+import com.example.yehongjiang.booklist.config.GlobalSetting;
 import com.example.yehongjiang.booklist.model.Book;
+import com.example.yehongjiang.booklist.model.BookList;
+import com.example.yehongjiang.booklist.model.ConnectBase;
+import com.example.yehongjiang.booklist.model.DataManage;
+import com.melnykov.fab.FloatingActionButton;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 
 /**
@@ -40,6 +50,7 @@ public class BookDetailActivity extends AppCompatActivity {
     private TextView bookPubInfo;
     private Button wanted;
     private ExpandableTextView expandableTextView;
+    private String wantedId;
 
 
     @Override
@@ -69,7 +80,7 @@ public class BookDetailActivity extends AppCompatActivity {
         wanted.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                new BookWantedTask("1", book).execute();
             }
         });
 
@@ -141,5 +152,40 @@ public class BookDetailActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    class BookWantedTask extends AsyncTask<String, Integer, String> {
+        String userId;
+        Book book;
 
+        BookWantedTask(String userId, Book book) {
+            this.userId = userId;
+            this.book = book;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            wanted.setClickable(false);
+            Log.d("MAT", "PreExceute");
+
+        }
+
+        @Override
+        protected String doInBackground(String... params) {
+            String result = DataManage.addWantedBook(book, userId);
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            String errorCode = ConnectBase.decodeResult(result).get(0).value;
+            if (errorCode.equals(GlobalSetting.RESULT_OK)) {
+                wantedId = ConnectBase.decodeResult(result).get(1).value;
+            }else {
+                Toast.makeText(BookDetailActivity.this, "Error", Toast.LENGTH_SHORT).show();
+            }
+
+            wanted.setClickable(true);
+        }
+    }
 }
